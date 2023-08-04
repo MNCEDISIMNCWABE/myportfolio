@@ -25,6 +25,7 @@ if __name__ == '__main__':
         soup = BeautifulSoup(response.text, 'lxml')
         apple_watches = soup.select('div.product-item-info')
 
+
         # Empty list to store the data
         items = []
 
@@ -67,6 +68,6 @@ if __name__ == '__main__':
        #slack_message = "\n".join([f":white_check_mark: Successful!\nProduct Name: {item['Title']}\nURL: {item['Link']}\nOld price: R {item['Old Price']:.2f}\nSpecial price: R {item['Special Price']:.2f}\nDecrease: {item['Decrease']:.2f}%" for item in items])
        #post_to_slack(slack_message, slack_credentials)
 
-    except:
-        msg = 'Error in the script!'
+    except Exception as e:
+        msg = f'Error in the script: {e}'
         post_to_slack(msg, slack_credentials)
