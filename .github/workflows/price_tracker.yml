@@ -2,7 +2,7 @@ name: Price Tracker
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # Schedule the job to run once a day at 10 AM (UTC)
+    - cron: '0 05 * * *'  # Schedule the job to run once a day at 05 AM (UTC)
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
