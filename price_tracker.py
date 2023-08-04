@@ -4,12 +4,6 @@ slack_credentials = 'https://hooks.slack.com/services/T03PC7D0CH5/B05LENYEYRZ/rw
 title = (f":rotating_light: Price Tracker Run:")
 
 import requests
-from datetime import datetime
-import datetime as dt
-import time
-import json
-import warnings
-warnings.filterwarnings("ignore")
  
 def post_to_slack(message,slack_credentials):
     data = { "icon_emoji": ":white_check_mark:",
@@ -20,17 +14,8 @@ def post_to_slack(message,slack_credentials):
 
 if __name__ == '__main__':
     try:
-        import datetime as dt
-        import random
-        import os
-        import smtplib
         import requests
         from bs4 import BeautifulSoup
-        import pandas as pd
-        import numpy as np
-        import pygsheets
-        import warnings
-        warnings.filterwarnings("ignore")
 
         # DECLARE CONSTANTS Apple = 5456, Samsung = 5457
         INCREDIBLE_ENDPOINT = 'https://www.incredible.co.za/'
