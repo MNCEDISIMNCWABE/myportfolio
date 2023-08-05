@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  run_stock_price_forecast:
+  run_stock_price_forecasts:
     runs-on: ubuntu-latest
 
     steps:
