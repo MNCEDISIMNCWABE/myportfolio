@@ -48,7 +48,7 @@ if __name__ == '__main__':
         logger.setLevel(logging.CRITICAL)
 
 
-        credentials = Credentials.from_service_account_file('C:/Users/leemn/OneDrive/Documents/personal google service acount/bright-arc-328707-b5e2d782b48b.json')
+        credentials = Credentials.from_service_account_file('bright-arc-328707-b5e2d782b48b.json')
 
         #start and end date for training
         start_date = '2014-01-02'
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     
     
         #>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Push Predictions to Google sheet file >>>>>>>>>>>>>>>>>>>>>
-        file = 'C:/Users/leemn/OneDrive/Documents/personal google service acount/bright-arc-328707-b5e2d782b48b.json'
+        file = 'bright-arc-328707-b5e2d782b48b.json'
         id = '1wu6wT8GwPitzhY8Yov3FspFBTd2dC6znKKNcbwP70UQ'
         s_n = 'share_price_forecast'
 
