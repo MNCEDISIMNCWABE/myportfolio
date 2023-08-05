@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[29]:
-
-
 # Send message to slack    
 slack_credentials = 'https://hooks.slack.com/services/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'
 title = (f":rotating_light: Driving School Search Terms - Google Trends Past 24 hours:")
@@ -27,12 +21,11 @@ if __name__ == '__main__':
         from google.oauth2 import service_account
         from google.oauth2.service_account import Credentials
         import pygsheets
-        #import df2gspread as d2g
         import googleapiclient
         from tabulate import tabulate
 
 
-        credentials=Credentials.from_service_account_file('C:/Users/leemn/OneDrive/Documents/personal google service acount/python-350618-3d9367733f29.json')
+        credentials=Credentials.from_service_account_file('python-350618-3d9367733f29.json')
 
         # Set the keywords and time frame for the query
         kw_list = ["driving school", "learners license", "driving license",
@@ -52,7 +45,7 @@ if __name__ == '__main__':
 
         # Export to google sheets
 
-        file = 'C:/Users/leemn/OneDrive/Documents/personal google service acount/python-350618-3d9367733f29.json'
+        file = 'python-350618-3d9367733f29.json'
         sheet_id = '1TDg0Gb_M5LFd-zOi70nmw2dyCpACqMi5qLDJTl4xxFk' 
         sheet_name = 'trends'
 
