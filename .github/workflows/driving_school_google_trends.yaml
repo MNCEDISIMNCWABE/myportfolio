@@ -1,0 +1,27 @@
+name: Stock Price Forecast
+
+on:
+  schedule:
+    - cron: '0 08 * * *'  # Schedule the job to run once a day at 10 AM (UTC)
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  track_prices:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip 
+        pip install requests oauth2client tabulate google-auth pandas numpy pytrends pygsheets google-auth-oauthlib google-auth-httplib2
+
+    - name: Run the script
+      run: python driving_school_google_trends.py
