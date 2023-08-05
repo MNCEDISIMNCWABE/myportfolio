@@ -63,7 +63,12 @@ if __name__ == '__main__':
 
         write_to_gsheet(file, sheet_id, sheet_name, df_regions)
 
-        
+        df_regions['driving school'] = df_regions['driving school'].astype(int)
+        df_regions['learners license'] = df_regions['learners license'].astype(int)
+        df_regions['driving license'] = df_regions['driving license'].astype(int)
+        df_regions['driving schools near me'] = df_regions['driving schools near me'].astype(int)
+        df_regions['code 14 driving school'] = df_regions['code 14 driving school'].astype(int)
+
         # post message to slack
         post_to_slack(f"""
                       :white_check_mark: Successful!
@@ -78,10 +83,3 @@ if __name__ == '__main__':
     except Exception as e:
         msg = f'Error in the script: {e}'
         post_to_slack(msg, slack_credentials)
-
-
-# In[ ]:
-
-
-
-
