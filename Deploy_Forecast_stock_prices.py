@@ -4,11 +4,8 @@ title = (f":rotating_light: Stock Price Predictions Run:")
 
 import requests
 from datetime import datetime
-import datetime as dt
 import time
 import json
-import warnings
-warnings.filterwarnings("ignore")
 
 start_time = datetime.now()
  
