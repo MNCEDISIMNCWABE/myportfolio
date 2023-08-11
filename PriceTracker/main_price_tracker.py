@@ -4,7 +4,6 @@ from web_scraper import scrape_incredible_discounts
 if __name__ == '__main__':
     try:
         items = scrape_incredible_discounts()
-
         if items:
             for item in items:
                 slack_message = (
