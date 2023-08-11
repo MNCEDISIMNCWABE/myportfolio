@@ -1,4 +1,4 @@
-from slack_utils import post_to_slack
+from post_to_slack import post_to_slack
 from web_scraper import scrape_incredible_discounts
 
 if __name__ == '__main__':
