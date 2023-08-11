@@ -3,20 +3,13 @@ from pytrends.request import TrendReq
 import numpy as np
 from google.oauth2 import service_account
 import pygsheets
-from constants import kw_list, timeframe
+from constants import *
 
 def get_google_trends_data(credentials_path):
-    #kw_list = ["driving school", "learners license", "driving license", "driving schools near me", "code 14 driving school"]
-    #timeframe = "now 1-d"
-
     pytrends = TrendReq()
     pytrends.build_payload(kw_list, timeframe=timeframe, geo="ZA", gprop="")
     df_regions = pytrends.interest_by_region(resolution='CITY', inc_low_vol=True, inc_geo_code=True)
     df_regions = df_regions.reset_index()
-
-    file = credentials_path
-    sheet_id = '1TDg0Gb_M5LFd-zOi70nmw2dyCpACqMi5qLDJTl4xxFk'
-    sheet_name = 'trends'
 
     def write_to_gsheet(service_file_path, spreadsheet_id, sheet_name, data_df):
         gc = pygsheets.authorize(service_file=service_file_path)
