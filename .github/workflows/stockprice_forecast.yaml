@@ -24,4 +24,4 @@ jobs:
         pip install requests oauth2client scikit-learn pandas-gbq pandas numpy logging yfinance prophet statsmodels seaborn pygsheets google-auth-oauthlib google-auth-httplib2
 
     - name: Run the script
-      run: python pipelilne_stockprice_forecast.py
+      run: python StockPriceForecasts/pipelilne_stockprice_forecast.py
