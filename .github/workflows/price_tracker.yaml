@@ -24,4 +24,4 @@ jobs:
         pip install requests beautifulsoup4 lxml  
 
     - name: Run the script
-      run: python price_tracker.py
+      run: python PriceTracker/main_price_tracker.py
