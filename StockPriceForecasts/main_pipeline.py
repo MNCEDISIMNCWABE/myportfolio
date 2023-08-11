@@ -1,5 +1,6 @@
 from datetime import datetime
 import pygsheets
+import pandas as pd
 from google.oauth2.service_account import Credentials
 import logging
 from post_to_slack import post_to_slack
