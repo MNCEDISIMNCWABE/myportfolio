@@ -2,11 +2,11 @@ from datetime import datetime
 import pygsheets
 from google.oauth2.service_account import Credentials
 import logging
-from constants import *
-from utils import post_to_slack
-from data_processing import download_data
+from post_to_slack import post_to_slack
+from get_and_process_data import download_data
 from forecasting import train_and_forecast
-from name_mapping import preprocess_ticker_names
+from ticker_mapping import preprocess_ticker_names
+from constants import *
 
 # Set up logging
 logger = logging.getLogger('cmdstanpy')
