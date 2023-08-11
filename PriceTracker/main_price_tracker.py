@@ -1,5 +1,6 @@
 from post_to_slack import post_to_slack
 from web_scraper import scrape_incredible_discounts
+from constants import *
 
 if __name__ == '__main__':
     try:
