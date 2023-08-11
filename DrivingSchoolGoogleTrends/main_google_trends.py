@@ -4,7 +4,7 @@ from constants import *
 
 if __name__ == '__main__':
     try:
-        df_regions = get_google_trends_data(file)
+        df_regions = get_google_trends_data(google_service_account_file)
 
         post_to_slack(f"""
             :white_check_mark: Successful!
