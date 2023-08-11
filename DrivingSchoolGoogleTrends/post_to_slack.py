@@ -1,4 +1,5 @@
 import requests
+from constants import slack_credentials
 
 def post_to_slack(message, slack_credentials, title):
     data = {
