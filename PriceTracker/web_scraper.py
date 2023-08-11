@@ -1,9 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from constants import ‎SEARCH_QUERY, INCREDIBLE_ENDPOINT
+from constants import ‎search_query, incredible_endpoint
 
 def scrape_incredible_discounts():
-    response = requests.get(f'{INCREDIBLE_ENDPOINT}{SEARCH_QUERY}')
+    response = requests.get(f'{incredible_endpoint}{search_query}')
     soup = BeautifulSoup(response.text, 'lxml')
     apple_watches = soup.select('div.product-item-info')
 
