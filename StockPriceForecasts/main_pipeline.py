@@ -30,7 +30,7 @@ def build_pipeline():
         preprocess_ticker_names(for_loop_forecast)
 
         # Write to Google Sheets
-        gc = pygsheets.authorize(service_file=google_service_account_file)
+        gc = pygsheets.authorize(service_file=file)
         sh = gc.open_by_key(google_sheet_id)
         try:
             wks = sh.worksheet_by_title(google_sheet_name)
