@@ -1,5 +1,6 @@
 import pandas as pd
 import yfinance as yf
+from constants import start_date, ticker_list
 
 def download_data(ticker_list, start_date):
     # Download and preprocess data
