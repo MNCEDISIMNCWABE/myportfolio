@@ -5,6 +5,7 @@ title = (f":rotating_light: Driving School Search Terms - Google Trends Past 24 
 kw_list = ["driving school", "learners license", "driving license", "driving schools near me", "code 14 driving school"]
 timeframe = "now 1-d"  # Last one day from now, it can take value 1 or 7 only
 # Export to google sheets
-file = Credentials.from_service_account_file('python-350618-3d9367733f29.json')
+google_service_account_file = Credentials.from_service_account_file('python-350618-3d9367733f29.json')
+file = 'python-350618-3d9367733f29.json'
 sheet_id = '1TDg0Gb_M5LFd-zOi70nmw2dyCpACqMi5qLDJTl4xxFk' 
 sheet_name = 'trends'
