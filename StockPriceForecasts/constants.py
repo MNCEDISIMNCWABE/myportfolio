@@ -1,5 +1,7 @@
+from google.oauth2.service_account import Credentials
 slack_credentials = 'https://hooks.slack.com/services/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'
-google_service_account_file = 'bright-arc-328707-b5e2d782b48b.json'
+google_service_account_file = Credentials.from_service_account_file('bright-arc-328707-b5e2d782b48b.json')
+file = 'bright-arc-328707-b5e2d782b48b.json'
 google_sheet_id = '1wu6wT8GwPitzhY8Yov3FspFBTd2dC6znKKNcbwP70UQ'
 google_sheet_name = 'share_price_forecast'
 bq_project_id = 'bright-arc-328707'
