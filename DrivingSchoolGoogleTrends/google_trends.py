@@ -11,6 +11,9 @@ def get_google_trends_data(credentials_path):
     df_regions = pytrends.interest_by_region(resolution='CITY', inc_low_vol=True, inc_geo_code=True)
     df_regions = df_regions.reset_index()
 
+    # Don't convert geo codes to int, keep them as strings
+    df_regions = df_regions.astype({'geoName': str})
+
     def write_to_gsheet(service_file_path, spreadsheet_id, sheet_name, data_df):
         gc = pygsheets.authorize(service_file=service_file_path)
         sh = gc.open_by_key(spreadsheet_id)
