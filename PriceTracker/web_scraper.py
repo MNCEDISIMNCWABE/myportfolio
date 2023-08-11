@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from constants import *
+from constants import ‎SEARCH_QUERY, INCREDIBLE_ENDPOINT
 
 def scrape_incredible_discounts():
     response = requests.get(f'{INCREDIBLE_ENDPOINT}{SEARCH_QUERY}')
