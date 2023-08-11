@@ -24,4 +24,4 @@ jobs:
         pip install requests oauth2client tabulate google-auth pandas numpy pytrends pygsheets google-auth-oauthlib google-auth-httplib2
 
     - name: Run the script
-      run: python driving_school_google_trends.py
+      run: python DrivingSchoolGoogleTrends/main_google_trends.py
