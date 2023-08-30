@@ -2,7 +2,7 @@ name: Driving School Google Trends
 
 on:
   schedule:
-    - cron: '0 08 * * *'  # Schedule the job to run once a day at 10 AM (UTC)
+    - cron: '0 04 * * *'  # Schedule the job to run once a day at 04 AM (UTC)
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
