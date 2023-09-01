@@ -12,7 +12,7 @@ if __name__ == '__main__':
         today = datetime.today().strftime('%d-%m')  # Get today's date in 'dd-mm' format
         
         # Check if it's someone's birthday and send a personalized message
-        for name in birthdays:
+        for name in people_birthdays:
             message = get_birthday_message(name, today)
             if message:
                 # Update the title to match the name of the person whose birthday it is
