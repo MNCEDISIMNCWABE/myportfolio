@@ -1,5 +1,4 @@
-name: Stock Price Forecast
-
+name: Birthdays Reminder
 on:
   schedule:
     - cron: '0 06 * * *'  # Schedule the job to run once a day at 06:00 AM (UTC) / 08:00 SAST
