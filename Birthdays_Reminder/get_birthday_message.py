@@ -1,3 +1,4 @@
+
 def get_birthday_message(name: str, today: str) -> str:
-    if birthdays.get(name) == today:
+    if people_birthdays.get(name) == today:
         return f":tada: Happy Birthday, {name}! :tada: Sending you best wishes on your special day! :confetti_ball:"
