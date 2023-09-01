@@ -24,4 +24,4 @@ jobs:
         pip install requests datetime
 
     - name: Run the script
-      run: python Birthday_Reminders/main.py
+      run: python Birthdays_Reminder/main.py
