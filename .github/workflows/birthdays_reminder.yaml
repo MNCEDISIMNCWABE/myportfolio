@@ -5,7 +5,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  run_stock_price_forecasts:
+  run_birthdays_reminder:
     runs-on: ubuntu-latest
 
     steps:
