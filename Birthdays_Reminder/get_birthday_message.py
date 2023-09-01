@@ -1,3 +1,4 @@
+from constants import people_birthdays
 
 def get_birthday_message(name: str, today: str) -> str:
     if people_birthdays.get(name) == today:
