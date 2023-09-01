@@ -1,3 +1,5 @@
+import requests
+
 def post_to_slack(title: str, message: str, slack_credentials: str) -> None:
     data = {
         "icon_emoji": ":white_check_mark:",
