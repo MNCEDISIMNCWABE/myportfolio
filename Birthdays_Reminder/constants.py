@@ -7,4 +7,5 @@ people_birthdays = {
   'Mom': '01-09',
   'Dad': '11-11',
   'Ntombenhle':'18-05'
+  'Nontobeko': '29-04'
 }
