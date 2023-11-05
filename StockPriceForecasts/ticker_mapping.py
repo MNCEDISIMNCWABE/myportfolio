@@ -7,7 +7,6 @@ def preprocess_ticker_names(for_loop_forecast):
         'PPH.JO': 'Pepkorh',
         'WHL.JO': 'Woolies',
         'APN.JO': 'Aspen',
-        'RBP.JO': 'Royal-Bafokeng',
         'PIK.JO': 'PnP',
         'HIL.JO': 'HomeChoice',
         'SOL.JO': 'Sasol',

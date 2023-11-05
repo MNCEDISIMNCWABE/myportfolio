@@ -8,7 +8,7 @@ bq_project_id = 'bright-arc-328707'
 bq_dataset_id = 'test'
 bq_table_id = 'stock_price_predictions'
 start_date = '2014-01-02'
-ticker_list = ['CLS.JO', 'GLN.JO', 'PPH.JO', 'WHL.JO', 'APN.JO', 'RBP.JO', 'PIK.JO', 'PPE.JO',
+ticker_list = ['CLS.JO', 'GLN.JO', 'PPH.JO', 'WHL.JO', 'APN.JO', 'PIK.JO', 'PPE.JO',
                'HIL.JO', 'SOL.JO', 'EXX.JO', 'MCG.JO', 'AIL.JO', 'TGA.JO', 'SSW.JO', 'INL.JO',
                'SHP.JO','FSR.JO','OMU.JO','SLM.JO','RMH.JO','GRT.JO','DSY.JO','GFI.JO',
                'SNH.JO']
