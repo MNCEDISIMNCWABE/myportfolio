@@ -7,6 +7,6 @@ people_birthdays = {
   'Mvikeli': '09-07',
   'Mom': '01-09',
   'Dad': '06-11',
-  'Ntombenhle':'18-05'
+  'Ntombenhle':'18-05',
   'Nontobeko': '29-04'
 }
