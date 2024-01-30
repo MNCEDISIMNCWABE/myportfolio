@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[27]:
-
-
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -163,10 +157,3 @@ if __name__ == '__main__':
     except Exception as e:
         msg = f'Error in the script: {e}'
         post_to_slack(msg, slack_credentials)
-
-
-# In[ ]:
-
-
-
-
