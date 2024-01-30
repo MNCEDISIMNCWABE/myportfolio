@@ -2,7 +2,7 @@ name: Lottery Predictions
 
 on:
   schedule:
-    - cron: '0 11 * * 0'  # Schedule the job to run once a day at 11 AM (UTC)/13pm SAST
+    - cron: '0 11 * * 2'  # Schedule the job to run once a day at 11 AM (UTC)/13pm SAST
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
