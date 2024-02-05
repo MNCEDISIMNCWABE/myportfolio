@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
         ###---- call functions----
         #1--get data
-        folder_path = "C:/Users/leemn/Downloads"
+        folder_path = "lottery_predictions"
         years = ['2019', '2020', '2021', '2022', '2023']
         combined_df = combine_lotto_data(folder_path, years)
         #2--drop nulls
