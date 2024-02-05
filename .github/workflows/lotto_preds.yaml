@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  track_prices:
+  lotto_preds:
     runs-on: ubuntu-latest
 
     steps:
