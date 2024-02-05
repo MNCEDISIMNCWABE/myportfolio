@@ -7,7 +7,7 @@ import traceback
 # Slack webhook URL
 slack_webhook_url = 'https://hooks.slack.com/services/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'
 # Service account file
-service_account_file = 'C:/Users/leemn/OneDrive/Documents/personal google service acount/bright-arc-328707-b5e2d782b48b.json'
+service_account_file = 'bright-arc-328707-b5e2d782b48b.json'
 # Google Sheet credentials
 google_sheet_id = '1H7ANVCpN2bvkUpe8yIrsIu4rI6xC1z-61q83e40xNSw'
 google_sheet_name = 'Bought'
