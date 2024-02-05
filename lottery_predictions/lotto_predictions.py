@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import requests, bs4
+import requests
 import datetime as dt
 import os
 import random
