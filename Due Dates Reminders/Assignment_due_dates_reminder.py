@@ -69,8 +69,4 @@ if __name__ == '__main__':
     send_reminder(dates_titles, slack_credentials)
 
 
-# In[ ]:
-
-
-
 
