@@ -7,7 +7,7 @@ def post_to_slack(title: str, message: str, slack_credentials: str) -> None:
     # Format the message to include the <!channel> tag which Slack recognizes for notifications.
     formatted_message = f"<!channel>\n"
     data = {
-        "text": formatted_message,  # This field is the main message text
+        "text": formatted_message, 
         "attachments": [{
             "color": "#9733EE",
             "fields": [{
