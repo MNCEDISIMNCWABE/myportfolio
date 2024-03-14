@@ -41,7 +41,7 @@ def send_reminder(dates_titles: dict, slack_credentials: str) -> None:
 
 if __name__ == '__main__':
     dates_titles = {
-        "March 19": "Dispute resolution 1 closes",
+        "March 25": "Dispute resolution 1 closes",
         "March 27": "Opinion 2 Assignment releases",
         "March 28": "Knowledge assessment closes",
         "April 5" : "Knowledge Assignment 3 releases",
