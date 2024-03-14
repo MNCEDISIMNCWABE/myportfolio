@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[29]:
-
-
 import requests
 from datetime import datetime, timedelta
 
@@ -73,10 +67,4 @@ if __name__ == '__main__':
     }
 
     send_reminder(dates_titles, slack_credentials)
-
-
-# In[ ]:
-
-
-
 
