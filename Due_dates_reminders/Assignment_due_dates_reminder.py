@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 
-slack_credentials = 'https://hooks.slack.com/services/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'
+slack_credentials = 'https://hooks.slack.com/services/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'
 
 def post_to_slack(title: str, message: str, slack_credentials: str) -> None:
     # Format the message to include the <!channel> tag which Slack recognizes for notifications.
