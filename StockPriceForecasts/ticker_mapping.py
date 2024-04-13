@@ -4,7 +4,6 @@ def preprocess_ticker_names(for_loop_forecast):
     ticker_name_mapping = {
         'CLS.JO': 'Clicks',
         'GLN.JO': 'Glencore',
-        'PPH.JO': 'Pepkorh',
         'WHL.JO': 'Woolies',
         'APN.JO': 'Aspen',
         'PIK.JO': 'PnP',
