@@ -17,15 +17,25 @@ logger.setLevel(logging.CRITICAL)
 
 def build_pipeline():
     start_time = datetime.now()
+    for_loop_forecast = pd.DataFrame()  # Ensure initialization outside the try-except block
+
     try:
         df = download_data(ticker_list, start_date)
         groups_by_ticker = df.groupby('ticker')
 
-        for_loop_forecast = pd.DataFrame()
         for ticker in ticker_list:
-            group = groups_by_ticker.get_group(ticker)
-            forecast = train_and_forecast(group)
-            for_loop_forecast = pd.concat((for_loop_forecast, forecast))
+            try:
+                group = groups_by_ticker.get_group(ticker)
+                if group['y'].isna().sum() >= len(group) - 1:  # Check if there are sufficient non-NaN rows
+                    raise ValueError(f"Not enough data to model for {ticker}.")
+                forecast = train_and_forecast(group)
+                for_loop_forecast = pd.concat([for_loop_forecast, forecast])
+            except Exception as e:
+                post_to_slack(f"Error with ticker {ticker}: {str(e)}")
+                continue
+
+        if for_loop_forecast.empty:
+            raise ValueError("No forecasts were generated; all tickers failed.")
 
         preprocess_ticker_names(for_loop_forecast)
 
