@@ -19,11 +19,22 @@ def build_pipeline():
     start_time = datetime.now()
     for_loop_forecast = pd.DataFrame()  # Ensure initialization outside the try-except block
 
+    for_loop_forecast = pd.DataFrame()  # Ensure initialization outside the try-except block
+
     try:
         df = download_data(ticker_list, start_date)
         groups_by_ticker = df.groupby('ticker')
 
         for ticker in ticker_list:
+            try:
+                group = groups_by_ticker.get_group(ticker)
+                if group['y'].isna().sum() >= len(group) - 1: 
+                    raise ValueError(f"Not enough data to model for {ticker}.")
+                forecast = train_and_forecast(group)
+                for_loop_forecast = pd.concat([for_loop_forecast, forecast])
+            except Exception as e:
+                post_to_slack(f"Error with ticker {ticker}: {str(e)}")
+                continue
             try:
                 group = groups_by_ticker.get_group(ticker)
                 if group['y'].isna().sum() >= len(group) - 1:  # Check if there are sufficient non-NaN rows
@@ -37,7 +48,8 @@ def build_pipeline():
         if for_loop_forecast.empty:
             raise ValueError("No forecasts were generated; all tickers failed.")
 
-        preprocess_ticker_names(for_loop_forecast)
+        if for_loop_forecast.empty:
+            raise ValueError("No forecasts were generated; all tickers failed.")
 
         # Write to Google Sheets
         gc = pygsheets.authorize(service_file=file)
