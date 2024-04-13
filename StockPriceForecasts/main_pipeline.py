@@ -17,6 +17,8 @@ logger.setLevel(logging.CRITICAL)
 
 def build_pipeline():
     start_time = datetime.now()
+    for_loop_forecast = pd.DataFrame()  # Ensure initialization outside the try-except block
+
     try:
         df = download_data(ticker_list, start_date)
         groups_by_ticker = df.groupby('ticker')
@@ -32,7 +34,8 @@ def build_pipeline():
                 post_to_slack(f"Error with ticker {ticker}: {str(e)}")
                 continue
 
-        preprocess_ticker_names(for_loop_forecast)
+        if for_loop_forecast.empty:
+            raise ValueError("No forecasts were generated; all tickers failed.")
 
         # Write to Google Sheets
         gc = pygsheets.authorize(service_file=file)
