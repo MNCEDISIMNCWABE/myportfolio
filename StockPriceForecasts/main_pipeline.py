@@ -21,11 +21,16 @@ def build_pipeline():
         df = download_data(ticker_list, start_date)
         groups_by_ticker = df.groupby('ticker')
 
-        for_loop_forecast = pd.DataFrame()
         for ticker in ticker_list:
-            group = groups_by_ticker.get_group(ticker)
-            forecast = train_and_forecast(group)
-            for_loop_forecast = pd.concat((for_loop_forecast, forecast))
+            try:
+                group = groups_by_ticker.get_group(ticker)
+                if group['y'].isna().sum() >= len(group) - 1: 
+                    raise ValueError(f"Not enough data to model for {ticker}.")
+                forecast = train_and_forecast(group)
+                for_loop_forecast = pd.concat([for_loop_forecast, forecast])
+            except Exception as e:
+                post_to_slack(f"Error with ticker {ticker}: {str(e)}")
+                continue
 
         preprocess_ticker_names(for_loop_forecast)
 
