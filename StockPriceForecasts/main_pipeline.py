@@ -26,7 +26,7 @@ def build_pipeline():
         for ticker in ticker_list:
             try:
                 group = groups_by_ticker.get_group(ticker)
-                if group['y'].isna().sum() >= len(group) - 1: 
+                if group['y'].isna().sum() >= len(group) - 1:  # Check if there are sufficient non-NaN rows
                     raise ValueError(f"Not enough data to model for {ticker}.")
                 forecast = train_and_forecast(group)
                 for_loop_forecast = pd.concat([for_loop_forecast, forecast])
@@ -36,6 +36,8 @@ def build_pipeline():
 
         if for_loop_forecast.empty:
             raise ValueError("No forecasts were generated; all tickers failed.")
+
+        preprocess_ticker_names(for_loop_forecast)
 
         # Write to Google Sheets
         gc = pygsheets.authorize(service_file=file)
