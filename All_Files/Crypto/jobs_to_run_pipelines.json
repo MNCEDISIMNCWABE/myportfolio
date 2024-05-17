@@ -1,0 +1,278 @@
+{
+  "prod": [
+    {
+      "name": "/prod/bitx/proto_ingest",
+      "cluster": "SMALL-GENERAL",
+      "owner": "dataops",
+      "schedule": {
+        "quartz_cron_expression": "0 0 1 * * ?"
+      },
+      "tasks": [
+        {
+          "name": "bronze-transfers-archive",
+          "notebook": {
+            "path": "notebooks/ops/librarian_bronze/bronze_proto_pipeline",
+            "parameters": {
+              "autoloader": "https://sqs.eu-west-1.amazonaws.com/229724635416/databricks-auto-ingest-transfers",
+              "raw_path": "/mnt/datalake_pb/transfers",
+              "catalog": "bitx",
+              "dataset": "transfers_archive"
+            }
+          }
+        },
+        {
+          "name": "silver-transfers-archive",
+          "notebook": {
+            "path": "notebooks/silver/bitx/transfers_archive/pipeline"
+          },
+          "depends_on": [
+            "bronze-transfers-archive"
+          ]
+        },
+        {
+          "name": "bronze-messenger-messages",
+          "notebook": {
+            "path": "notebooks/bronze/bitx/messenger_messages/pipeline"
+          }
+        },
+        {
+          "name": "silver-messenger-delivery-attempts",
+          "notebook": {
+            "path": "notebooks/silver/bitx/messenger_delivery_attempts/pipeline"
+          },
+          "depends_on": [
+            "bronze-messenger-messages"
+          ]
+        },
+        {
+          "name": "silver-messenger-messages",
+          "notebook": {
+            "path": "notebooks/silver/bitx/messenger_messages/pipeline"
+          },
+          "depends_on": [
+            "bronze-messenger-messages"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "/notebooks/gold/bitx/bank_transaction_events_extended/schedule",
+      "template": "pipelines",
+      "notebook": {
+        "path": "notebooks/gold/bitx/bank_transaction_events_extended/pipeline"
+      },
+      "schedule": {
+        "quartz_cron_expression": "0 0 5 * * ?"
+      },
+      "owner": "data",
+      "cluster": "X-SMALL",
+      "tags": {}
+    },
+    {
+      "name": "/prod/analytics/bitx/views",
+      "owner": "data",
+      "cluster": "2X-SMALL",
+      "tasks": [
+        {
+          "name": "vw_deposit_velocity",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_deposit_velocity"
+          }
+        },
+				{
+          "name": "vw_logins",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_logins"
+          }
+        },
+        {
+          "name": "vw_login_events",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_login_events"
+          }
+        },
+        {
+          "name": "vw_suspicious_logins",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_suspicious_logins"
+          }
+        },
+        {
+          "name": "vw_attempted_buys",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_attempted_buys"
+          }
+        },
+        {
+          "name": "vw_average_revenue_per_user",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_average_revenue_per_user"
+          }
+        },
+        {
+          "name": "vw_bank_transactions",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_bank_transactions"
+          }
+        },
+        {
+          "name": "vw_beneficiaries",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_beneficiaries"
+          }
+        },
+        {
+          "name": "vw_cm_lookup_table",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_cm_lookup_table"
+          }
+        },
+        {
+          "name": "vw_deposit_experience_revival",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_deposit_experience_revival"
+          }
+        },
+        {
+          "name": "vw_deposits",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_deposits"
+          }
+        },
+        {
+          "name": "vw_kyc_customer_sessions",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_kyc_customer_sessions"
+          }
+        },
+        {
+          "name": "vw_lookups",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_lookups"
+          }
+        },
+        {
+          "name": "vw_referral_rewards",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_referral_rewards"
+          }
+        },
+        {
+          "name": "vw_social_pays",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_social_pays"
+          }
+        },
+        {
+          "name": "vw_transfers_master",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_transfers_master"
+          }
+        },
+        {
+          "name": "vw_unsuccessful_deposit_attempts",
+          "notebook": {
+            "path": "notebooks/gold/bitx/views/uc/vw_unsuccessful_deposit_attempts"
+          }
+        }
+      ]
+    }
+  ],
+  "staging": [
+    {
+      "name": "/staging/bitx/proto_ingest",
+      "cluster": "X-SMALL",
+      "owner": "dataops",
+      "tasks": [
+        {
+          "name": "bronze-transfers-archive",
+          "notebook": {
+            "path": "notebooks/ops/librarian_bronze/bronze_proto_pipeline",
+            "parameters": {
+              "autoloader": "https://sqs.eu-west-1.amazonaws.com/182185831504/databricks-auto-ingest-transfers",
+              "raw_path": "/mnt/datalake_pb/transfers",
+              "catalog": "bitx",
+              "dataset": "transfers_archive"
+            }
+          },
+          "max_retries": 0
+        },
+        {
+          "name": "silver-transfers-archive",
+          "notebook": {
+            "path": "notebooks/silver/bitx/transfers_archive/pipeline"
+          },
+          "depends_on": [
+            "bronze-transfers-archive"
+          ],
+          "max_retries": 0
+        },
+        {
+          "name": "bronze-messenger-messages",
+          "notebook": {
+            "path": "notebooks/bronze/bitx/messenger_messages/pipeline"
+          },
+          "max_retries": 0
+        },
+        {
+          "name": "silver-messenger-delivery-attempts",
+          "notebook": {
+            "path": "notebooks/silver/bitx/messenger_delivery_attempts/pipeline"
+          },
+          "depends_on": [
+            "bronze-messenger-messages"
+          ],
+          "max_retries": 0
+        },
+        {
+          "name": "silver-messenger-messages",
+          "notebook": {
+            "path": "notebooks/silver/bitx/messenger_messages/pipeline"
+          },
+          "depends_on": [
+            "bronze-messenger-messages"
+          ],
+          "max_retries": 0
+        }
+      ],
+      "timeout_seconds": 43200
+    },
+    {
+      "name": "/staging/ops/updates/I2350_create_test_staging_table_single_task",
+      "template": "pipelines",
+      "owner": "dataops",
+      "notebook": {
+        "path": "notebooks/ops/updates/I2350_create_test_staging_table"
+      },
+      "cluster": "SMALL-ACL"
+    },
+    {
+      "name": "/staging/ops/updates/I2350_create_test_staging_table_multi_task",
+      "owner": "dataops",
+      "tasks": [
+        {
+          "name": "1",
+          "notebook": {
+            "path": "notebooks/ops/updates/I2350_create_test_staging_table"
+          }
+        },
+        {
+          "name": "2",
+          "notebook": {
+            "path": "notebooks/ops/updates/I2350_create_test_staging_table"
+          }
+        }
+      ],
+      "cluster": "SMALL-ACL"
+    },
+    {
+      "name": "/staging/ops/updates/I2350_grant_privleges_job_runner",
+      "template": "pipelines",
+      "owner": "dataops",
+      "notebook": {
+        "path": "notebooks/ops/updates/I2350_grant_privileges_job_runner"
+      },
+      "cluster": "SMALL-ACL"
+    }
+  ]
+}

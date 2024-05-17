@@ -1,0 +1,26 @@
+Welcome!
+
+For Q1 please edit the model in the .pbix file.
+For Q2,3 and 4, please place cards and graphs to answer the questions and try to style the answer dashboard mildly.
+
+Q1. Denormalize to 3rd normal form (Star Schema)
+There may be no snowflaked dimensions, and no circular relationships.
+
+Q2. Which SpecialOfferID had the highest number of ordered units?
+
+Q3. Which PersonID used the special offers the most, and how many was that?
+Hint - Since Customer and SpecialOffer are unrelated, 
+	you may need to use the RELATED function in the fact table to get the right figure
+
+Q4. Create a measure for the result of Q3 (Number of Special offers used by Customers), 
+	and display a visual that shows a trend of the number of special offers used by a specific person over time. 
+	*Include a filter for PersonID and a date slider using the correct date field.
+
+
+Notes/Assumptions:
+
+Performance is not a concern, any way to get to the right answers is acceptable.
+
+Time Limit: 4 hours
+
+The csv files in the data folder will not be necessary, but are included to help if you want to look at the raw data.

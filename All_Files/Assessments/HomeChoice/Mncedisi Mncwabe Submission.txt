@@ -1,0 +1,32 @@
+1.) 
+--------------------------------Python Exercise-----------------------------
+
+x = (2,2,2,2,4,7,7,7,7,13,13,13,13,13,13,13,13,17,17,33,33,33,33,33,33,33,33,33
+     ,33,33,33,33,33,33,33,33,33,33,33,33,33,33,41,41,41,41,41,41,41)
+
+def ascii_density_histogram(val):
+        histogram = {}
+        for p in val:
+            histogram[p] = histogram.get(p, 0) + 1
+        return histogram
+       
+def ascii_histogram(val):
+    cnt = ascii_density_histogram(val)
+    for p in sorted(cnt):
+        print('{0:5d} {1}'.format(p, '#' * cnt[p]))
+ 
+print(ascii_density_histogram(x))
+ascii_histogram(x)
+
+
+
+
+
+2.) 
+-------------------------------SQL Exercise--------------------
+
+SELECT o.customerID, i.item_category, COUNT(o.orderID) AS n_orders
+FROM orders AS o
+LEFT JOIN item_info AS i
+	ON o.itemID = i.itemID
+GROUP BY 1,2
