@@ -1,40 +1,37 @@
--- Create a consolidated marketing costs table
-
-CREATE OR REPLACE TABLE analytics.bitx.marketing_costs AS
+CREATE OR REPLACE VIEW analytics.bitx.vw_marketing_costs(
+date COMMENT 'Denotes campaign date, referral or promo code applied date.',
+cost_type COMMENT 'Denotes a marketing cost type such as referral, promo campaign or paid marketing/online advertising.',
+cost_usd COMMENT 'Cost in USD associated with the marketing.'
+) AS
 SELECT
-  user_id,
-  SUM(COALESCE(cost_usd, 0)) AS cost_usd,
-  applied_at AS date,
-  cost_type
+  date,
+  cost_type,
+  SUM(cost_usd) AS cost_usd
 FROM (
-  -- Costs from referrals
   SELECT
-    user_id,
+    DATE(applied_at) AS date,
     COALESCE(reward_amount_usd, 0) AS cost_usd,
-    applied_at,
     'referral' AS cost_type
   FROM analytics.bitx.referrals
   UNION ALL
-  -- Costs from referrers
   SELECT
-    user_id,
+    DATE(applied_at) AS date,
     COALESCE(rr_reward_amount_usd, 0) AS cost_usd,
-    applied_at,
     'referrer' AS cost_type
-  FROM analytics.bitx.referrers
+  FROM analytics.bitx.referrers 
   UNION ALL
-  -- Costs from promos
   SELECT
-    user_id,
+    DATE(created_at) AS date,
     COALESCE(amount_usd, 0) AS cost_usd,
-    created_at AS applied_at,
     'promo' AS cost_type
-  FROM analytics.bitx.promos
+  FROM analytics.bitx.promos 
+  UNION ALL
+  SELECT
+    DATE(campaign_date) AS date,
+    COALESCE(adn_cost, 0) AS cost_usd,
+    'paid_marketing' AS cost_type
+  FROM analytics.singular.vw_singular_campaigns
 ) consolidated_costs
-GROUP BY
-  user_id,
-  applied_at,
-  cost_type
-ORDER BY
-  user_id,
-  applied_at;
+GROUP BY date, cost_type;
+
+ALTER VIEW analytics.bitx.vw_marketing_costs owner TO `schema_owners`;
