@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
-slack_credentials = 'https://hooks.slack.com/services/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'
+slack_credentials = 'https://hooks.slack.com/services/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'
 title = (f":rotating_light: Lottery Predictions:")
 
 
