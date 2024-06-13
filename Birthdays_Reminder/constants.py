@@ -1,5 +1,5 @@
 # Send message to slack
-slack_credentials = 'https://hooks.slack.com/services/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'
+slack_credentials = 'https://hooks.slack.com/services/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'
 
 # Format DD-MM
 people_birthdays = {
