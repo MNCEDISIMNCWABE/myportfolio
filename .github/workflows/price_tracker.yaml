@@ -32,7 +32,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt  
+        pip install --no-cache-dir --upgrade -r requirements.txt || true  # Ignore errors
+        pip install gunicorn
 
     - name: Run the script
       run: python PriceTracker/main_price_tracker.py
