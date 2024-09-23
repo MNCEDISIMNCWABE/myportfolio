@@ -6,3 +6,6 @@ pandas
 slack-sdk
 certifi
 ssl
+python-dotenv
+datetime
+pytz
