@@ -20,20 +20,13 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Cache pip
-      uses: actions/cache@v2
-      with:
-        path: ~/.cache/pip  # Cache location
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}  # Cache key based on OS and requirements hash
-        restore-keys: |
-          ${{ runner.os }}-pip-  # Fallback key if exact match is not found
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests  # Explicitly install requests
-        pip install --no-cache-dir --upgrade -r requirements.txt || true  # Ignore errors
-        pip install gunicorn
+        pip install -r requirements.txt
+
+    - name: Verify installed packages
+      run: pip list
 
     - name: Run the script
       env:
