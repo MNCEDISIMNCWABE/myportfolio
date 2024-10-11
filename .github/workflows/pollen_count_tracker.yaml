@@ -1,7 +1,7 @@
 name: Tracks Pollen Count
 on:
   schedule:
-    - cron: '0 12 * * 5'  # Schedule the job to run every Friday at 10:00 AM (UTC) / 12:00 PM SAST
+    - cron: '0 12 * * 5'  # Schedule the job to run every Friday at 12:00 AM (UTC) / 14:00 PM SAST
   workflow_dispatch:  # Allows manual triggering
 
 env:
