@@ -63,7 +63,7 @@ def parse_pollen_level(soup):
             logging.error("Cape Town row not found.")
             return None, None
 
-        # Find the div containing the pollen level class (e.g., 'pollen-lightorange')
+        # Find the div containing the pollen level class
         pollen_div = cape_town_row.find('div', class_=lambda x: x and 'pollen-' in x)
         if not pollen_div:
             logging.error("Pollen level class not found for Cape Town.")
