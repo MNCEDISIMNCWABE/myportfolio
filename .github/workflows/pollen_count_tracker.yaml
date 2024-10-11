@@ -1,0 +1,35 @@
+name: Tracks Pollen Count
+on:
+  schedule:
+    - cron: '0 12 * * 5'  # Schedule the job to run every Friday at 10:00 AM (UTC) / 12:00 PM SAST
+  workflow_dispatch:  # Allows manual triggering
+
+env:
+  PYTHON_VERSION: 3.9  
+
+jobs:
+  track_pollen_count:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Verify installed packages
+      run: pip list
+
+    - name: Run the script
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL_ID_POLLEN: ${{ secrets.SLACK_CHANNEL_ID_POLLEN }}
+      run: python Pollen_Count_Tracking/pollen_tracking_pipeline.py
