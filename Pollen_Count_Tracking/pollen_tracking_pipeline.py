@@ -124,16 +124,26 @@ def post_to_slack(city, date, pollen_level, action, report_url):
 def main():
     # Get the latest Friday
     latest_friday = get_latest_friday()
-    latest_friday_formatted = latest_friday.strftime('%d-%B-%Y').lower()
+    latest_friday_formatted_zero = latest_friday.strftime('%d-%B-%Y').lower()  # With leading zero
+    latest_friday_formatted_no_zero = latest_friday.strftime('%-d-%B-%Y').lower()  # Without leading zero
 
-    # Construct the URL for the latest report
-    latest_report_url = f'{base_url}{latest_friday_formatted}/'
-    print(f"Constructed URL for the latest report: {latest_report_url}")
+    # Construct the URLs for the latest report
+    url_with_zero = f'{base_url}{latest_friday_formatted_zero}/'
+    url_without_zero = f'{base_url}{latest_friday_formatted_no_zero}/'
+    print(f"Constructed URLs:\nWith zero: {url_with_zero}\nWithout zero: {url_without_zero}")
 
-    # Fetch the report content
-    report_content = fetch_report(latest_report_url)
+    # Try fetching the report with the leading zero
+    report_content = fetch_report(url_with_zero)
     if not report_content:
-        return
+        # If the first attempt fails, try without the leading zero
+        report_content = fetch_report(url_without_zero)
+        if not report_content:
+            logging.error("Failed to fetch the report with both URL formats.")
+            return
+        else:
+            latest_report_url = url_without_zero
+    else:
+        latest_report_url = url_with_zero
 
     # Parse the HTML content
     soup = BeautifulSoup(report_content, 'html.parser')
@@ -143,11 +153,11 @@ def main():
 
     # Display the result if available and post to Slack
     if pollen_level and action:
-        logging.info(f"Cape Town Overall Pollen Risk for {latest_friday_formatted}: {pollen_level}")
+        logging.info(f"Cape Town Overall Pollen Risk for {latest_friday.strftime('%d-%B-%Y')}: {pollen_level}")
         logging.info(f"Action: {action}")
 
         # Post the information to Slack
-        success = post_to_slack("Cape Town", latest_friday_formatted, pollen_level, action, latest_report_url)
+        success = post_to_slack("Cape Town", latest_friday.strftime('%d-%B-%Y'), pollen_level, action, latest_report_url)
         if success:
             logging.info("Pollen report posted to Slack successfully.")
         else:
