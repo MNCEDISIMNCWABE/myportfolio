@@ -21,7 +21,7 @@ docs_tool = FileReadTool()
 TRANSCRIPTS_DIR = "transcripts"
 os.makedirs(TRANSCRIPTS_DIR, exist_ok=True)
 
-bright_data_api_key = "0a52fbf4ebfa328b50a6a80e1bc1aa0634328ca9f9cd98b531cebaf7eb4813d6"
+bright_data_api_key = "23b78375c0dcb16ea17bd05bafe20f74e8bc966640008f86e3eeedf3455aac97"
 
 @st.cache_resource
 def load_llm():
@@ -82,10 +82,10 @@ def create_agents_and_tasks():
 #   Streamlit Setup
 # ===========================
 
-st.markdown("""
-    # YouTube Trend Analysis powered by <img src="data:image/png;base64,{}" width="120" style="vertical-align: -3px;"> & <img src="data:image/png;base64,{}" width="120" style="vertical-align: -3px;">
-""".format(base64.b64encode(open("/Users/lindani/Documents/crewai.png", "rb").read()).decode(), base64.b64encode(open("/Users/lindani/Documents/crewai.png", "rb").read()).decode()), unsafe_allow_html=True)
-
+st.markdown(
+    "# YouTube Trend Analysis powered by CrewAI", 
+    unsafe_allow_html=True
+)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []  # Chat history

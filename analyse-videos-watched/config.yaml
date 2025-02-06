@@ -1,0 +1,13 @@
+agents:
+  - role: "YouTube Video Analyst"
+    goal: "Analyze YouTube video transcripts located in {{file_paths}} to identify trends and insights"
+    backstory: "You are an expert in analyzing video content and extracting meaningful insights."
+  - role: "Response Synthesizer"
+    goal: "Summarize the analysis into a coherent report"
+    backstory: "You are skilled at synthesizing complex information into clear and concise summaries."
+
+tasks:
+  - description: "Analyze the transcripts of the provided YouTube videos located in {{file_paths}}"
+    expected_output: "A detailed analysis of the video content, including key themes and insights."
+  - description: "Summarize the analysis into a report"
+    expected_output: "A concise summary report of the video analysis."
