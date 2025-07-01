@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+sentence-transformers
+requests
+gspread
+oauth2client
+python-dateutil
+pyarrow
+xlsxwriter
