@@ -1,0 +1,23 @@
+// LangGraph Workflow
+digraph {
+	start [label=Start]
+	generate [label=generate_sql]
+	validate [label=validate_sql]
+	human_approval [label=get_human_approval]
+	modify [label=modify_query_based_on_feedback]
+	execute [label=execute_query]
+	analyze [label=analyze_results]
+	correct [label=correct_query]
+	end [label=End]
+	start -> generate
+	generate -> validate
+	validate -> human_approval
+	human_approval -> modify [label="human_approved and needs_modification"]
+	human_approval -> execute [label=human_approved]
+	human_approval -> correct [label="not human_approved"]
+	modify -> execute
+	execute -> analyze
+	analyze -> correct [label="needs_correction and attempts < 3"]
+	analyze -> end [label=otherwise]
+	correct -> validate
+}

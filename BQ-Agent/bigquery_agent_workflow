@@ -1,0 +1,36 @@
+// BigQuery Agent Workflow
+digraph {
+	rankdir=LR size="12,8"
+	generate [label="Generate SQL
+(LLM creates initial query)"]
+	validate [label="Validate SQL
+(Check syntax and references)"]
+	human_approval [label="Human Approval
+(Review and feedback)" color=lightblue shape=diamond style=filled]
+	modify [label="Modify Query
+(Apply human feedback)"]
+	execute [label="Execute Query
+(Run in BigQuery)"]
+	analyze [label="Analyze Results
+(Check for issues)"]
+	correct [label="Correct Query
+(Fix based on errors)"]
+	END [label="END
+(Final Result)" shape=doublecircle]
+	generate -> validate
+	validate -> human_approval
+	modify -> execute
+	execute -> analyze
+	correct -> validate
+	human_approval -> modify [label="Approved
+but needs modification"]
+	human_approval -> execute [label=Approved]
+	human_approval -> correct [label=Rejected]
+	analyze -> correct [label="Needs correction
+& attempts < 3"]
+	analyze -> END [label="Success or
+max attempts"]
+	label="BigQuery Agent Workflow
+(With Human-in-the-Loop)"
+	fontsize=20
+}
