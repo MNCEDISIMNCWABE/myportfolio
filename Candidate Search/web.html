@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Sourcing Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Slide 1 - Search Interface */
+        .slide1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+        }
+
+        .search-demo {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border: 2px solid #e0e7ff;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .results-preview {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .candidate-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .candidate-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .candidate-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .candidate-info h4 {
+            color: #1f2937;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .candidate-info p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .match-score {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Slide 2 - System Architecture */
+        .slide2 {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            flex: 1;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            color: #1f2937;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            color: #374151;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            color: #374151;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .slide-indicator {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .slide {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Slide 1: Search Interface -->
+        <div class="slide slide1 active">
+            <div class="header">
+                <h1>Intelligent Candidate Sourcing Tool</h1>
+                <p>Search, Match & Rank candidates with AI-powered precision</p>
+            </div>
+
+            <div class="search-demo">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Data Analyst in Cape Town with Python and SQL skills" readonly>
+                    <button class="search-btn">🔍</button>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Job Title</label>
+                        <select>
+                            <option>Data Analyst</option>
+                            <option>Software Developer</option>
+                            <option>Product Manager</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <select>
+                            <option>Cape Town</option>
+                            <option>Johannesburg</option>
+                            <option>Durban</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Skills</label>
+                        <input type="text" placeholder="Python, SQL, Excel" readonly>
+                    </div>
+                    <div class="filter-group">
+                        <label>Experience Level</label>
+                        <select>
+                            <option>2-5 years</option>
+                            <option>5-8 years</option>
+                            <option>8+ years</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-preview">
+                <h3 style="color: #1f2937; margin-bottom: 1rem;">Top Matching Candidates</h3>
+                
+                <div class="candidate-card">
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">SM</div>
+                        <div class="candidate-info">
+                            <h4>Sarah Mitchell</h4>
+                            <p>Data Analyst • Cape Town • 4 years experience</p>
+                        </div>
+                        <div class="match-score">95% Match</div>
+                    </div>
+                    <p style="color: #6b7280; font-size: 0.9rem;">Python, SQL, Tableau, Machine Learning • UCT Graduate</p>
+                </div>
+
+                <div class="candidate-card">
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">DK</div>
+                        <div class="candidate-info">
+                            <h4>David Kim</h4>
+                            <p>Senior Data Analyst • Cape Town • 6 years experience</p>
+                        </div>
+                        <div class="match-score">89% Match</div>
+                    </div>
+                    <p style="color: #6b7280; font-size: 0.9rem;">Python, SQL, R, PowerBI • Stellenbosch Graduate</p>
+                </div>
+
+                <div class="candidate-card">
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">LP</div>
+                        <div class="candidate-info">
+                            <h4>Lisa Patel</h4>
+                            <p>Junior Data Analyst • Cape Town • 2 years experience</p>
+                        </div>
+                        <div class="match-score">84% Match</div>
+                    </div>
+                    <p style="color: #6b7280; font-size: 0.9rem;">Python, SQL, Excel, Statistics • Wits Graduate</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: System Architecture -->
+        <div class="slide slide2">
+            <div class="header">
+                <h1 style="color: white;">System Architecture & Features</h1>
+                <p style="color: rgba(255,255,255,0.9);">Comprehensive solution built for enterprise recruitment</p>
+            </div>
+
+            <div class="architecture-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Multi-Source Data Integration</h3>
+                    <p>Comprehensive candidate profiles from leading job portals</p>
+                    <ul class="feature-list">
+                        <li>LinkedIn integration</li>
+                        <li>PNet candidate database</li>
+                        <li>Indeed professional profiles</li>
+                        <li>POPI & GDPR compliant APIs</li>
+                        <li>Real-time data synchronization</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Matching Engine</h3>
+                    <p>Machine learning algorithms for precise candidate ranking</p>
+                    <ul class="feature-list">
+                        <li>Skills-based matching</li>
+                        <li>Experience level analysis</li>
+                        <li>Education background scoring</li>
+                        <li>Certification validation</li>
+                        <li>Cultural fit assessment</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Enterprise Security & Access</h3>
+                    <p>Role-based permissions with comprehensive data protection</p>
+                    <ul class="feature-list">
+                        <li>Role-based access control</li>
+                        <li>Admin user management</li>
+                        <li>Audit trail logging</li>
+                        <li>Data encryption at rest</li>
+                        <li>Secure API endpoints</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="pricing-badge">Cost-Effective</div>
+                    <div class="feature-icon">💰</div>
+                    <h3>Transparent Pricing Model</h3>
+                    <p>Simple, predictable costs with maximum value</p>
+                    <ul class="feature-list">
+                        <li>One-time development fee</li>
+                        <li>Monthly API subscription</li>
+                        <li>No hidden charges</li>
+                        <li>Negotiable pricing</li>
+                        <li>Scalable as you grow</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn active" onclick="goToSlide(0)">Search Interface</button>
+            <button class="nav-btn" onclick="goToSlide(1)">System Architecture</button>
+        </div>
+
+        <!-- Slide Indicators -->
+        <div class="slide-indicator">
+            <div class="indicator-dot active" onclick="goToSlide(0)"></div>
+            <div class="indicator-dot" onclick="goToSlide(1)"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const indicators = document.querySelectorAll('.indicator-dot');
+
+        function goToSlide(index) {
+            // Remove active classes
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.add('prev');
+            navBtns[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+
+            // Update current slide
+            currentSlide = index;
+
+            // Add active classes
+            slides[currentSlide].classList.remove('prev');
+            slides[currentSlide].classList.add('active');
+            navBtns[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+
+            // Reset prev classes after transition
+            setTimeout(() => {
+                slides.forEach(slide => slide.classList.remove('prev'));
+            }, 600);
+        }
+
+        // Auto advance slides every 10 seconds
+        setInterval(() => {
+            const nextSlide = (currentSlide + 1) % slides.length;
+            goToSlide(nextSlide);
+        }, 10000);
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                const nextSlide = (currentSlide + 1) % slides.length;
+                goToSlide(nextSlide);
+            } else if (e.key === 'ArrowLeft') {
+                const prevSlide = (currentSlide - 1 + slides.length) % slides.length;
+                goToSlide(prevSlide);
+            }
+        });
+
+        // Add some interactive animations
+        document.querySelectorAll('.candidate-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            });
+        });
+    </script>
+</body>
+</html>

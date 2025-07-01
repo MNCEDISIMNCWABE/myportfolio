@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Consolidated Candidate Search</title>
+    <style>
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            padding: 20mm;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Cover Page */
+        .cover-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding-top: 60mm;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/><circle cx="30" cy="25" r="0.5" fill="white" opacity="0.05"/><circle cx="70" cy="15" r="1.5" fill="white" opacity="0.08"/><circle cx="90" cy="40" r="0.8" fill="white" opacity="0.06"/><circle cx="20" cy="60" r="1.2" fill="white" opacity="0.07"/><circle cx="80" cy="80" r="0.6" fill="white" opacity="0.04"/><circle cx="50" cy="90" r="1" fill="white" opacity="0.09"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .cover-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cover-description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+        }
+
+        .cover-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .cover-feature {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-feature h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cover-feature p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Content Pages */
+        .content-page {
+            background: white;
+        }
+
+        .page-header {
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            color: #1f2937;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* Search Interface Page */
+        .search-demo-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-bar-visual {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            font-size: 1.1rem;
+            color: #374151;
+        }
+
+        .search-bar-visual::after {
+            content: '🔍';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-item {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-value {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: #1f2937;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .candidate-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .candidate-info h4 {
+            color: #1f2937;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .candidate-info p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .match-score {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .candidate-skills {
+            color: #4b5563;
+            font-size: 0.95rem;
+            background: white;
+            padding: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .candidate-skills .skill-line {
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .candidate-skills .skill-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .candidate-skills strong {
+            display: inline-block;
+            min-width: 120px;
+            vertical-align: top;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            margin: 2rem 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f0f9ff;
+            border-radius: 10px;
+            border: 1px solid #bae6fd;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-title {
+            font-weight: 600;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-text {
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="page cover-page">
+        <div class="cover-content">
+            <h1 class="cover-title">AI-Powered Consolidated Candidate Search</h1>
+            <p class="cover-description">
+                Consolidated platform to search, match, and rank candidates from multiple job portals using official professional data aggregation APIs and AI-powered candidate-job description matching.
+            </p>
+            
+            <div class="cover-features">
+                <div class="cover-feature">
+                    <h3>🔍 Unified Search</h3>
+                    <p>Unified way to search for candidates from various job portals such as LinkedIn, Indeed with centralized candidate data access</p>
+                </div>
+                <div class="cover-feature">
+                    <h3>📋 Job Description Matching</h3>
+                    <p>Input your job description to automatically rank and match candidates by relevance</p>
+                </div>
+                <div class="cover-feature">
+                    <h3>🌐 Official APIs</h3>
+                    <p>Uses official employee aggregation APIs that comply with POPI and GDPR data privacy laws to source candidate profiles</p>
+                </div>
+                <div class="cover-feature">
+                    <h3>⚡ Focus on Best Fits</h3>
+                    <p>AI ranking prioritizes ideal candidates, reducing manual resume screening</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Interface Page -->
+    <div class="page content-page page-break">
+        <div class="page-header">
+            <h1 class="page-title">Unified Search & Job Description Matching</h1>
+            <p class="page-subtitle">One platform, multiple sources, AI-powered candidate ranking</p>
+        </div>
+
+        <div class="search-demo-section">
+            <h3 class="section-title">Step 1: Unified Candidate Search</h3>
+            <div class="search-bar-visual">
+                Data Analyst in Cape Town with Python and SQL skills
+            </div>
+
+            <div class="filters-grid">
+                <div class="filter-item">
+                    <div class="filter-label">Job Title</div>
+                    <div class="filter-value">Data Analyst</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">Location</div>
+                    <div class="filter-value">Cape Town, Western Cape</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">Required Skills</div>
+                    <div class="filter-value">Python, SQL, Excel</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">Experience Level</div>
+                    <div class="filter-value">2-5 years</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">University Name</div>
+                    <div class="filter-value">University of Cape Town</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">Certifications</div>
+                    <div class="filter-value">AWS, Google Analytics</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">Industry</div>
+                    <div class="filter-value">Technology, Finance</div>
+                </div>
+                <div class="filter-item">
+                    <div class="filter-label">Languages</div>
+                    <div class="filter-value">English, Afrikaans</div>
+                </div>
+            </div>
+            <p style="color: #6b7280; font-style: italic; text-align: center; margin-top: 1rem;">
+                Search across LinkedIn, Indeed and other job portals in one unified search
+            </p>
+        </div>
+
+        <div style="background: #fff7ed; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #fed7aa;">
+            <h3 class="section-title" style="color: #c2410c;">Step 2: Input Your Job Description</h3>
+            <div style="background: white; border: 2px dashed #fb923c; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                <p style="color: #9a3412; font-weight: 600; margin-bottom: 1rem;">Job Description Example:</p>
+                <p style="color: #7c2d12; line-height: 1.6;">
+                    "Data Analyst with 3-5 years experience in Cape Town. Must have strong Python and SQL skills, 
+                    experience with data visualization tools like Tableau or PowerBI. Bachelor's degree in Computer Science, 
+                    Statistics, or related field required. Experience with machine learning is a plus."
+                </p>
+            </div>
+            <p style="color: #9a3412; font-style: italic; text-align: center;">
+                AI automatically analyzes job requirements and matches against candidate profiles
+            </p>
+        </div>
+
+        <div class="results-section">
+            <h3 class="section-title">Step 3: AI-Ranked Results Based on Job Description Match</h3>
+            
+            <div class="candidate-card">
+                <div class="candidate-header">
+                    <div class="candidate-avatar">SM</div>
+                    <div class="candidate-info">
+                        <h4>Sarah Mitchell</h4>
+                        <p>Data Analyst • Cape Town • 4 years experience</p>
+                    </div>
+                    <div class="match-score">95% Match</div>
+                </div>
+                <div class="candidate-skills">
+                    <span class="skill-line"><strong>Skills:</strong> Python, SQL, Tableau, Machine Learning, Statistics</span>
+                    <span class="skill-line"><strong>Education:</strong> BSc Computer Science, University of Cape Town</span>
+                    <span class="skill-line"><strong>Contact:</strong> sarah.mitchell@email.com • +27 82 xxx xxxx</span>
+                    <span class="skill-line"><strong>LinkedIn Profile:</strong> https://www.linkedin.com/in/........</span>
+                </div>
+            </div>
+
+            <div class="candidate-card">
+                <div class="candidate-header">
+                    <div class="candidate-avatar">DK</div>
+                    <div class="candidate-info">
+                        <h4>David Kim</h4>
+                        <p>Senior Data Analyst • Cape Town • 6 years experience</p>
+                    </div>
+                    <div class="match-score">89% Match</div>
+                </div>
+                <div class="candidate-skills">
+                    <span class="skill-line"><strong>Skills:</strong> Python, SQL, R, PowerBI, Data Visualization</span>
+                    <span class="skill-line"><strong>Education:</strong> MSc Data Science, Stellenbosch University</span>
+                    <span class="skill-line"><strong>Contact:</strong> david.kim@email.com • +27 83 xxx xxxx</span>
+                    <span class="skill-line"><strong>LinkedIn Profile:</strong> https://www.linkedin.com/in/........</span>
+                </div>
+            </div>
+
+            <div class="candidate-card">
+                <div class="candidate-header">
+                    <div class="candidate-avatar">LP</div>
+                    <div class="candidate-info">
+                        <h4>Lisa Patel</h4>
+                        <p>Junior Data Analyst • Cape Town • 2 years experience</p>
+                    </div>
+                    <div class="match-score">84% Match</div>
+                </div>
+                <div class="candidate-skills">
+                    <span class="skill-line"><strong>Skills:</strong> Python, SQL, Excel, Statistics, Tableau</span>
+                    <span class="skill-line"><strong>Education:</strong> BCom Informatics, University of the Witwatersrand</span>
+                    <span class="skill-line"><strong>Contact:</strong> lisa.patel@email.com • +27 84 xxx xxxx</span>
+                    <span class="skill-line"><strong>LinkedIn Profile:</strong> https://www.linkedin.com/in/........</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="benefits-section">
+            <h3 class="section-title">The Impact: Focus on What Matters</h3>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-title">Manual Resume Screening Time Saved</div>
+                    <div class="benefit-text">Focus on top-ranked candidates first</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-title">Precise Matching</div>
+                    <div class="benefit-text">Job description drives candidate ranking</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔗</div>
+                    <div class="benefit-title">Unified Access</div>
+                    <div class="benefit-text">Multiple job portals as sources, one search interface and candidate ranking</div>
+                </div>
+            </div>
+            
+            <div style="background: #f8fafc; border-radius: 10px; padding: 2rem; margin-top: 3rem; border: 1px solid #e2e8f0; text-align: center;">
+                <h4 style="color: #1f2937; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">By: Lindani Mncedisi Mncwabe</h4>
+                <p style="color: #6b7280; margin-bottom: 0.5rem;">Mobile: +27717329160</p>
+                <p style="color: #6b7280;">Email: leemncwabe29@gmail.com</p>
+                <p style="color: #6b7280;">Professional Experience: 5+ years in Data Science, Analytics and AI/ML Roles</p>
+                <p style="color: #6b7280;">LinkedIn Profile: <a href="https://www.linkedin.com/in/mncedisi-lindani-mncwabe-a1b087171/" style="color: #6b7280;">https://www.linkedin.com/in/mncedisi-lindani-mncwabe-a1b087171/</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
